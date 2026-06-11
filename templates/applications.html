@@ -12,6 +12,15 @@
     </div>
     {{if .URL}}<div class="mt-2"><a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{.URL}}</a></div>{{end}}
     {{if .Notes}}<p class="notes-text mt-2 mb-0">{{.Notes}}</p>{{end}}
+    <form method="post" action="/applications/status" class="d-md-none mt-3">
+      <input type="hidden" name="id" value="{{.ID}}">
+      <label class="form-label" for="status-{{.ID}}">Status</label>
+      <select class="form-select form-select-sm" id="status-{{.ID}}" name="status" onchange="this.form.submit()">
+        <option {{if eq .Status "Applied"}}selected{{end}}>Applied</option>
+        <option {{if eq .Status "Rejected"}}selected{{end}}>Rejected</option>
+        <option {{if eq .Status "Accepted"}}selected{{end}}>Accepted</option>
+      </select>
+    </form>
     <div class="d-flex justify-content-between align-items-center mt-3">
       <span class="meta">{{.CreatedAt}}</span>
       <form method="post" action="/applications/delete" onsubmit="return confirm('Delete this application?')">

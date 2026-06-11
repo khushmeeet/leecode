@@ -46,6 +46,12 @@
     @media (prefers-reduced-motion: reduce) {
       .card { animation: none !important; transition: none !important; }
     }
+    /* iOS Safari repaints fixed backgrounds on every scroll frame. */
+    @media (max-width: 767.98px) {
+      body { background-attachment: scroll; }
+      .page-title { font-size: 1.4rem; }
+      .stat-card .stat-num { font-size: 1.7rem; }
+    }
 
     .navbar {
       background: linear-gradient(120deg, #143d38 0%, #0d6c60 100%);
