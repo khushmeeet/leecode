@@ -1,0 +1,83 @@
+{{define "title"}}Links · LeeCode{{end}}
+{{define "content"}}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+  <div>
+    <h1 class="page-title mb-1">Links</h1>
+    <p class="page-sub mb-0">A reading list you can reach from anywhere.</p>
+  </div>
+  <button class="btn btn-accent" data-bs-toggle="modal" data-bs-target="#addLink">+ Add link</button>
+</div>
+
+<div class="modal fade" id="addLink" tabindex="-1" aria-labelledby="addLinkLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/links/add">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="addLinkLabel">New link</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label" for="link-url">URL *</label>
+            <input class="form-control" id="link-url" name="url" type="url" placeholder="https://" required>
+            <div class="form-text">Title and description are fetched from the page automatically.</div>
+          </div>
+          <div class="mb-1">
+            <label class="form-label" for="link-tag">Tag <span class="fw-normal">(optional)</span></label>
+            <input class="form-control" id="link-tag" name="tag" placeholder="system-design">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-quiet" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-accent">Add link</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{{if .Tags}}
+<div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+  <span class="meta">Filter:</span>
+  <a href="/links" class="btn btn-sm {{if eq .Tag ""}}btn-accent{{else}}btn-quiet{{end}}">All</a>
+  {{$current := .Tag}}
+  {{range .Tags}}
+  <a href="/links?tag={{.}}" class="btn btn-sm {{if eq $current .}}btn-accent{{else}}btn-quiet{{end}}">{{.}}</a>
+  {{end}}
+</div>
+{{end}}
+
+{{$tag := .Tag}}
+{{range .Links}}
+<div class="card liftable mb-2">
+  <div class="card-body py-3">
+    <div class="d-flex align-items-center gap-3">
+      {{if not .Read}}<span class="unread-dot" title="Unread"></span>{{end}}
+      <div class="flex-grow-1 min-w-0">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <a class="card-title mb-0 text-reset text-decoration-none" href="{{.URL}}" target="_blank" rel="noopener">{{.Title}}</a>
+          <a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{if .Host}}{{.Host}}{{else}}{{.URL}}{{end}}</a>
+          {{if .Tag}}<span class="badge badge-soft badge-tag">{{.Tag}}</span>{{end}}
+          <span class="meta">{{.CreatedAt}}</span>
+        </div>
+        {{if .Description}}<p class="notes-text desc-clamp mt-1 mb-0">{{.Description}}</p>{{end}}
+      </div>
+      <div class="d-flex gap-1 flex-shrink-0">
+        <form method="post" action="/links/toggle">
+          <input type="hidden" name="id" value="{{.ID}}">
+          <input type="hidden" name="back" value="/links{{if $tag}}?tag={{$tag}}{{end}}">
+          <button class="btn btn-sm {{if .Read}}btn-read{{else}}btn-quiet{{end}}" title="{{if .Read}}Click to mark unread{{else}}Click to mark read{{end}}">{{if .Read}}&#10003; Read{{else}}Mark read{{end}}</button>
+        </form>
+        <form method="post" action="/links/delete" onsubmit="return confirm('Delete this link?')">
+          <input type="hidden" name="id" value="{{.ID}}">
+          <input type="hidden" name="back" value="/links{{if $tag}}?tag={{$tag}}{{end}}">
+          <button class="btn btn-sm btn-quiet" aria-label="Delete">&times;</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{else}}
+<div class="empty-note">No links{{if .Tag}} with this tag{{end}} yet. Use “+ Add link” to save one.</div>
+{{end}}
+{{end}}

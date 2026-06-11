@@ -1,0 +1,101 @@
+{{define "title"}}Algorithms · LeeCode{{end}}
+{{define "content"}}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+  <div>
+    <h1 class="page-title mb-1">Algorithms</h1>
+    <p class="page-sub mb-0">Problems worth a second pass before interviews.</p>
+  </div>
+  <button class="btn btn-accent" data-bs-toggle="modal" data-bs-target="#addProblem">+ Add problem</button>
+</div>
+
+<div class="modal fade" id="addProblem" tabindex="-1" aria-labelledby="addProblemLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/algorithms/add">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="addProblemLabel">New problem</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label" for="prob-title">Title *</label>
+            <input class="form-control" id="prob-title" name="title" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="prob-url">URL</label>
+            <input class="form-control" id="prob-url" name="url" type="url" placeholder="https://leetcode.com/problems/">
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <label class="form-label" for="prob-difficulty">Difficulty</label>
+              <select class="form-select" id="prob-difficulty" name="difficulty">
+                <option>Easy</option><option>Medium</option><option>Hard</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label class="form-label" for="prob-pattern">Pattern</label>
+              <input class="form-control" id="prob-pattern" name="pattern" placeholder="two-pointers">
+            </div>
+          </div>
+          <div class="mb-1">
+            <label class="form-label" for="prob-notes">Notes</label>
+            <textarea class="form-control" id="prob-notes" name="notes" rows="7"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-quiet" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-accent">Add problem</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<form method="get" action="/algorithms" class="d-flex flex-wrap align-items-end gap-2 mb-3">
+  <div>
+    <label class="form-label" for="filter-difficulty">Difficulty</label>
+    <select class="form-select form-select-sm" id="filter-difficulty" name="difficulty" onchange="this.form.submit()">
+      <option value="">All</option>
+      <option {{if eq .Difficulty "Easy"}}selected{{end}}>Easy</option>
+      <option {{if eq .Difficulty "Medium"}}selected{{end}}>Medium</option>
+      <option {{if eq .Difficulty "Hard"}}selected{{end}}>Hard</option>
+    </select>
+  </div>
+  <div>
+    <label class="form-label" for="filter-pattern">Pattern</label>
+    <select class="form-select form-select-sm" id="filter-pattern" name="pattern" onchange="this.form.submit()">
+      <option value="">All</option>
+      {{$current := .Pattern}}
+      {{range .Patterns}}<option {{if eq $current .}}selected{{end}}>{{.}}</option>{{end}}
+    </select>
+  </div>
+  {{if or .Difficulty .Pattern}}<a href="/algorithms" class="btn btn-sm btn-quiet">Clear</a>{{end}}
+</form>
+
+{{$back := printf "/algorithms?difficulty=%s&pattern=%s" .Difficulty .Pattern}}
+{{range .Problems}}
+<div class="card liftable mb-2">
+  <div class="card-body py-3">
+    <div class="d-flex align-items-start gap-3">
+      <div class="flex-grow-1 min-w-0">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <span class="card-title mb-0">{{.Title}}</span>
+          <span class="badge badge-soft badge-{{if eq .Difficulty "Easy"}}easy{{else if eq .Difficulty "Medium"}}medium{{else}}hard{{end}}">{{.Difficulty}}</span>
+          {{if .Pattern}}<span class="badge badge-soft badge-pattern">{{.Pattern}}</span>{{end}}
+          <span class="meta">{{.CreatedAt}}</span>
+        </div>
+        {{if .URL}}<a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{.URL}}</a>{{end}}
+        {{if .Notes}}<p class="notes-text mt-1 mb-0">{{.Notes}}</p>{{end}}
+      </div>
+      <form method="post" action="/algorithms/delete" class="flex-shrink-0" onsubmit="return confirm('Delete this problem?')">
+        <input type="hidden" name="id" value="{{.ID}}">
+        <input type="hidden" name="back" value="{{$back}}">
+        <button class="btn btn-sm btn-quiet" aria-label="Delete">&times;</button>
+      </form>
+    </div>
+  </div>
+</div>
+{{else}}
+<div class="empty-note">No problems match. Use “+ Add problem” to save one.</div>
+{{end}}
+{{end}}

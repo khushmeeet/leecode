@@ -1,0 +1,125 @@
+{{define "title"}}Applications · LeeCode{{end}}
+
+{{define "appcard"}}
+<div class="card liftable app-card mb-3 status-{{if eq .Status "Applied"}}applied{{else if eq .Status "Rejected"}}rejected{{else}}accepted{{end}}" draggable="true" data-id="{{.ID}}">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <div class="card-title mb-0">{{.Company}}</div>
+        {{if .Role}}<div class="meta">{{.Role}}</div>{{end}}
+      </div>
+      <span class="badge badge-soft badge-{{if eq .Status "Applied"}}applied{{else if eq .Status "Rejected"}}rejected{{else}}accepted{{end}}">{{.Status}}</span>
+    </div>
+    {{if .URL}}<div class="mt-2"><a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{.URL}}</a></div>{{end}}
+    {{if .Notes}}<p class="notes-text mt-2 mb-0">{{.Notes}}</p>{{end}}
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <span class="meta">{{.CreatedAt}}</span>
+      <form method="post" action="/applications/delete" onsubmit="return confirm('Delete this application?')">
+        <input type="hidden" name="id" value="{{.ID}}">
+        <button class="btn btn-sm btn-quiet" aria-label="Delete">&times;</button>
+      </form>
+    </div>
+  </div>
+</div>
+{{end}}
+
+{{define "content"}}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+  <div>
+    <h1 class="page-title mb-1">Applications</h1>
+    <p class="page-sub mb-0">Track every application from sent to settled.</p>
+  </div>
+  <button class="btn btn-accent" data-bs-toggle="modal" data-bs-target="#addApplication">+ Add application</button>
+</div>
+
+<div class="modal fade" id="addApplication" tabindex="-1" aria-labelledby="addApplicationLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="/applications/add">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="addApplicationLabel">New application</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label" for="app-company">Company *</label>
+            <input class="form-control" id="app-company" name="company" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="app-role">Role</label>
+            <input class="form-control" id="app-role" name="role">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="app-url">Posting URL</label>
+            <input class="form-control" id="app-url" name="url" type="url" placeholder="https://">
+          </div>
+          <div class="mb-1">
+            <label class="form-label" for="app-notes">Notes</label>
+            <textarea class="form-control" id="app-notes" name="notes" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-quiet" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-accent">Add application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="kanban-head mb-2"><span class="col-dot" style="background:var(--blue)"></span>Applied <span class="kanban-count">{{len .Applied}}</span></div>
+    <div class="kanban-col" data-status="Applied">
+      {{range .Applied}}{{template "appcard" .}}{{else}}<div class="empty-note">Nothing here yet.</div>{{end}}
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="kanban-head mb-2"><span class="col-dot" style="background:var(--rose)"></span>Rejected <span class="kanban-count">{{len .Rejected}}</span></div>
+    <div class="kanban-col" data-status="Rejected">
+      {{range .Rejected}}{{template "appcard" .}}{{else}}<div class="empty-note">Nothing here yet.</div>{{end}}
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="kanban-head mb-2"><span class="col-dot" style="background:var(--green)"></span>Accepted <span class="kanban-count">{{len .Accepted}}</span></div>
+    <div class="kanban-col" data-status="Accepted">
+      {{range .Accepted}}{{template "appcard" .}}{{else}}<div class="empty-note">Nothing here yet.</div>{{end}}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll(".app-card").forEach(function (card) {
+    card.addEventListener("dragstart", function (e) {
+      e.dataTransfer.setData("text/plain", card.dataset.id);
+      e.dataTransfer.effectAllowed = "move";
+      card.classList.add("dragging");
+    });
+    card.addEventListener("dragend", function () {
+      card.classList.remove("dragging");
+    });
+  });
+
+  document.querySelectorAll(".kanban-col").forEach(function (col) {
+    col.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      col.classList.add("drag-over");
+    });
+    col.addEventListener("dragleave", function (e) {
+      if (!col.contains(e.relatedTarget)) col.classList.remove("drag-over");
+    });
+    col.addEventListener("drop", function (e) {
+      e.preventDefault();
+      col.classList.remove("drag-over");
+      var id = e.dataTransfer.getData("text/plain");
+      if (!id) return;
+      fetch("/applications/status", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ id: id, status: col.dataset.status }),
+      }).then(function () { location.reload(); });
+    });
+  });
+</script>
+{{end}}
