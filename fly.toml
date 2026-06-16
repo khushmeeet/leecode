@@ -1,23 +1,28 @@
-app = "leecode"
-primary_region = "ord"
+# fly.toml app configuration file generated for leecode on 2026-06-15T22:30:43-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'leecode'
+primary_region = 'ord'
 
 [build]
 
 [env]
-  DB_PATH = "/data/interview.db"
-  PORT = "8080"
+  DB_PATH = '/data/interview.db'
+  PORT = '8080'
 
 [[mounts]]
-  source = "leecode_data"
-  destination = "/data"
+  source = 'leecode_data'
+  destination = '/data'
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "256mb"
+  size = 'shared-cpu-1x'
+  memory = '256mb'

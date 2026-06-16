@@ -1,11 +1,12 @@
 {{define "title"}}Links · LeeCode{{end}}
 {{define "content"}}
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+<div class="page-head d-flex justify-content-between align-items-end flex-wrap gap-3">
   <div>
-    <h1 class="page-title mb-1">Links</h1>
-    <p class="page-sub mb-0">A reading list you can reach from anywhere.</p>
+    <div class="page-no">Section 02</div>
+    <h1 class="page-title">Links</h1>
+    <p class="page-sub">A reading list you can reach from anywhere.</p>
   </div>
-  <button class="btn btn-accent" data-bs-toggle="modal" data-bs-target="#addLink">+ Add link</button>
+  <button class="btn btn-ink" data-bs-toggle="modal" data-bs-target="#addLink">Add link</button>
 </div>
 
 <div class="modal fade" id="addLink" tabindex="-1" aria-labelledby="addLinkLabel" aria-hidden="true">
@@ -28,8 +29,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-quiet" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-accent">Add link</button>
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-ink">Add link</button>
         </div>
       </form>
     </div>
@@ -37,12 +38,12 @@
 </div>
 
 {{if .Tags}}
-<div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+<div class="d-flex flex-wrap align-items-center gap-2 mb-4">
   <span class="meta">Filter:</span>
-  <a href="/links" class="btn btn-sm {{if eq .Tag ""}}btn-accent{{else}}btn-quiet{{end}}">All</a>
+  <a href="/links" class="btn btn-sm btn-rule{{if eq .Tag ""}} is-on{{end}}">All</a>
   {{$current := .Tag}}
   {{range .Tags}}
-  <a href="/links?tag={{.}}" class="btn btn-sm {{if eq $current .}}btn-accent{{else}}btn-quiet{{end}}">{{.}}</a>
+  <a href="/links?tag={{.}}" class="btn btn-sm btn-rule{{if eq $current .}} is-on{{end}}">{{.}}</a>
   {{end}}
 </div>
 {{end}}
@@ -53,12 +54,12 @@
   <div class="card-body py-3">
     <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 gap-sm-3">
       <div class="d-flex align-items-center gap-3 flex-grow-1 min-w-0">
-      {{if not .Read}}<span class="unread-dot" title="Unread"></span>{{end}}
+      {{if not .Read}}<span class="unread-mark" title="Unread">&#9632;</span>{{end}}
       <div class="flex-grow-1 min-w-0">
         <div class="d-flex flex-wrap align-items-center gap-2">
           <a class="card-title mb-0 text-reset text-decoration-none" href="{{.URL}}" target="_blank" rel="noopener">{{.Title}}</a>
           <a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{if .Host}}{{.Host}}{{else}}{{.URL}}{{end}}</a>
-          {{if .Tag}}<span class="badge badge-soft badge-tag">{{.Tag}}</span>{{end}}
+          {{if .Tag}}<span class="chip t-butter">{{.Tag}}</span>{{end}}
           <span class="meta">{{.CreatedAt}}</span>
         </div>
         {{if .Description}}<p class="notes-text desc-clamp mt-1 mb-0">{{.Description}}</p>{{end}}
@@ -68,18 +69,18 @@
         <form method="post" action="/links/toggle">
           <input type="hidden" name="id" value="{{.ID}}">
           <input type="hidden" name="back" value="/links{{if $tag}}?tag={{$tag}}{{end}}">
-          <button class="btn btn-sm {{if .Read}}btn-read{{else}}btn-quiet{{end}}" title="{{if .Read}}Click to mark unread{{else}}Click to mark read{{end}}">{{if .Read}}&#10003; Read{{else}}Mark read{{end}}</button>
+          <button class="btn btn-sm btn-rule{{if .Read}} is-on{{end}}" title="{{if .Read}}Click to mark unread{{else}}Click to mark read{{end}}">{{if .Read}}&#10003; Read{{else}}Mark read{{end}}</button>
         </form>
         <form method="post" action="/links/delete" onsubmit="return confirm('Delete this link?')">
           <input type="hidden" name="id" value="{{.ID}}">
           <input type="hidden" name="back" value="/links{{if $tag}}?tag={{$tag}}{{end}}">
-          <button class="btn btn-sm btn-quiet" aria-label="Delete">&times;</button>
+          <button class="btn btn-sm btn-rule" aria-label="Delete">&times;</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 {{else}}
-<div class="empty-note">No links{{if .Tag}} with this tag{{end}} yet. Use “+ Add link” to save one.</div>
+<div class="empty-note">No links{{if .Tag}} with this tag{{end}} yet. Use &ldquo;Add link&rdquo; to save one.</div>
 {{end}}
 {{end}}

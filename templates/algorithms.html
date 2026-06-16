@@ -1,11 +1,12 @@
 {{define "title"}}Algorithms · LeeCode{{end}}
 {{define "content"}}
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+<div class="page-head d-flex justify-content-between align-items-end flex-wrap gap-3">
   <div>
-    <h1 class="page-title mb-1">Algorithms</h1>
-    <p class="page-sub mb-0">Problems worth a second pass before interviews.</p>
+    <div class="page-no">Section 03</div>
+    <h1 class="page-title">Algorithms</h1>
+    <p class="page-sub">Problems worth a second pass before interviews.</p>
   </div>
-  <button class="btn btn-accent" data-bs-toggle="modal" data-bs-target="#addProblem">+ Add problem</button>
+  <button class="btn btn-ink" data-bs-toggle="modal" data-bs-target="#addProblem">Add problem</button>
 </div>
 
 <div class="modal fade" id="addProblem" tabindex="-1" aria-labelledby="addProblemLabel" aria-hidden="true">
@@ -43,15 +44,15 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-quiet" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-accent">Add problem</button>
+          <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-ink">Add problem</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
-<form method="get" action="/algorithms" class="d-flex flex-wrap align-items-end gap-2 mb-3">
+<form method="get" action="/algorithms" class="d-flex flex-wrap align-items-end gap-2 mb-4">
   <div>
     <label class="form-label" for="filter-difficulty">Difficulty</label>
     <select class="form-select form-select-sm" id="filter-difficulty" name="difficulty" onchange="this.form.submit()">
@@ -69,7 +70,7 @@
       {{range .Patterns}}<option {{if eq $current .}}selected{{end}}>{{.}}</option>{{end}}
     </select>
   </div>
-  {{if or .Difficulty .Pattern}}<a href="/algorithms" class="btn btn-sm btn-quiet">Clear</a>{{end}}
+  {{if or .Difficulty .Pattern}}<a href="/algorithms" class="btn btn-sm btn-rule">Clear</a>{{end}}
 </form>
 
 {{$back := printf "/algorithms?difficulty=%s&pattern=%s" .Difficulty .Pattern}}
@@ -80,8 +81,8 @@
       <div class="flex-grow-1 min-w-0">
         <div class="d-flex flex-wrap align-items-center gap-2">
           <span class="card-title mb-0">{{.Title}}</span>
-          <span class="badge badge-soft badge-{{if eq .Difficulty "Easy"}}easy{{else if eq .Difficulty "Medium"}}medium{{else}}hard{{end}}">{{.Difficulty}}</span>
-          {{if .Pattern}}<span class="badge badge-soft badge-pattern">{{.Pattern}}</span>{{end}}
+          <span class="chip {{if eq .Difficulty "Easy"}}t-mint{{else if eq .Difficulty "Medium"}}t-butter{{else}}t-rose chip-solid{{end}}"><span class="glyph">{{if eq .Difficulty "Easy"}}&#9675;{{else if eq .Difficulty "Medium"}}&#9680;{{else}}&#9679;{{end}}</span> {{.Difficulty}}</span>
+          {{if .Pattern}}<span class="chip t-peach">{{.Pattern}}</span>{{end}}
           <span class="meta">{{.CreatedAt}}</span>
         </div>
         {{if .URL}}<a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{.URL}}</a>{{end}}
@@ -90,12 +91,12 @@
       <form method="post" action="/algorithms/delete" class="flex-shrink-0" onsubmit="return confirm('Delete this problem?')">
         <input type="hidden" name="id" value="{{.ID}}">
         <input type="hidden" name="back" value="{{$back}}">
-        <button class="btn btn-sm btn-quiet" aria-label="Delete">&times;</button>
+        <button class="btn btn-sm btn-rule" aria-label="Delete">&times;</button>
       </form>
     </div>
   </div>
 </div>
 {{else}}
-<div class="empty-note">No problems match. Use “+ Add problem” to save one.</div>
+<div class="empty-note">No problems match. Use &ldquo;Add problem&rdquo; to save one.</div>
 {{end}}
 {{end}}

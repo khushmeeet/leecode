@@ -1,64 +1,56 @@
 {{define "title"}}Dashboard · LeeCode{{end}}
 {{define "content"}}
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+<div class="page-head d-flex justify-content-between align-items-end flex-wrap gap-3">
   <div>
-    <h1 class="page-title mb-1">Dashboard</h1>
-    <p class="page-sub mb-0">Where the job hunt stands today.</p>
+    <div class="page-no">Contents</div>
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-sub">Where the job hunt stands today.</p>
   </div>
-  <a href="/export" class="btn btn-quiet">Download backup</a>
+  <a href="/export" class="btn btn-ghost">Download backup</a>
 </div>
 
-<div class="row g-3 mb-3">
-  <div class="col-6 col-md-4">
-    <a href="/applications" class="text-decoration-none">
-      <div class="card liftable stat-card h-100" style="--stripe:var(--blue)"><div class="card-body">
-        <div class="stat-num">{{.Counts.Applied}}</div>
-        <div class="stat-label"><span class="badge badge-soft badge-applied">Applied</span></div>
-      </div></div>
-    </a>
-  </div>
-  <div class="col-6 col-md-4">
-    <a href="/applications" class="text-decoration-none">
-      <div class="card liftable stat-card h-100" style="--stripe:var(--rose)"><div class="card-body">
-        <div class="stat-num">{{.Counts.Rejected}}</div>
-        <div class="stat-label"><span class="badge badge-soft badge-rejected">Rejected</span></div>
-      </div></div>
-    </a>
-  </div>
-  <div class="col-6 col-md-4">
-    <a href="/applications" class="text-decoration-none">
-      <div class="card liftable stat-card h-100" style="--stripe:var(--green)"><div class="card-body">
-        <div class="stat-num">{{.Counts.Accepted}}</div>
-        <div class="stat-label"><span class="badge badge-soft badge-accepted">Accepted</span></div>
-      </div></div>
-    </a>
-  </div>
-</div>
-
-<div class="row g-3">
-  <div class="col-6 col-md-4">
-    <a href="/links" class="text-decoration-none">
-      <div class="card liftable stat-card h-100" style="--stripe:var(--amber)"><div class="card-body">
-        <div class="stat-num">{{.Counts.UnreadLinks}}<span class="meta"> / {{.Counts.TotalLinks}}</span></div>
-        <div class="stat-label">Unread links</div>
-      </div></div>
-    </a>
-  </div>
-  <div class="col-6 col-md-4">
-    <a href="/algorithms" class="text-decoration-none">
-      <div class="card liftable stat-card h-100" style="--stripe:var(--violet)"><div class="card-body">
-        <div class="stat-num">{{.Counts.Problems}}</div>
-        <div class="stat-label">Problems to revise</div>
-      </div></div>
-    </a>
-  </div>
-  <div class="col-6 col-md-4">
-    <a href="/behavioral" class="text-decoration-none">
-      <div class="card liftable stat-card h-100" style="--stripe:var(--accent)"><div class="card-body">
-        <div class="stat-num">{{.Counts.Stories}}</div>
-        <div class="stat-label">Behavioral answers</div>
-      </div></div>
-    </a>
-  </div>
+<div class="toc">
+  <a href="/applications">
+    <div class="toc-cell t-sky">
+      <div class="toc-fig">Fig. 01 — Applied</div>
+      <div class="toc-num">{{.Counts.Applied}}</div>
+      <div class="toc-label">applications in flight</div>
+    </div>
+  </a>
+  <a href="/applications">
+    <div class="toc-cell t-rose">
+      <div class="toc-fig">Fig. 02 — Rejected</div>
+      <div class="toc-num">{{.Counts.Rejected}}</div>
+      <div class="toc-label">doors closed, noted</div>
+    </div>
+  </a>
+  <a href="/applications">
+    <div class="toc-cell t-mint">
+      <div class="toc-fig">Fig. 03 — Accepted</div>
+      <div class="toc-num">{{.Counts.Accepted}}</div>
+      <div class="toc-label">offers on the table</div>
+    </div>
+  </a>
+  <a href="/links">
+    <div class="toc-cell t-butter">
+      <div class="toc-fig">Fig. 04 — Reading</div>
+      <div class="toc-num">{{.Counts.UnreadLinks}}<span class="denom"> / {{.Counts.TotalLinks}}</span></div>
+      <div class="toc-label">links still unread</div>
+    </div>
+  </a>
+  <a href="/algorithms">
+    <div class="toc-cell t-peach">
+      <div class="toc-fig">Fig. 05 — Revision</div>
+      <div class="toc-num">{{.Counts.Problems}}</div>
+      <div class="toc-label">problems to revise</div>
+    </div>
+  </a>
+  <a href="/behavioral">
+    <div class="toc-cell t-lilac">
+      <div class="toc-fig">Fig. 06 — Stories</div>
+      <div class="toc-num">{{.Counts.Stories}}</div>
+      <div class="toc-label">behavioral answers</div>
+    </div>
+  </a>
 </div>
 {{end}}
