@@ -1,15 +1,10 @@
 {{define "title"}}Applications · LeeCode{{end}}
 
 {{define "appcard"}}
-<div class="card liftable app-card mb-3 {{if eq .Status "Applied"}}t-sky{{else if eq .Status "Rejected"}}t-rose{{else}}t-mint{{end}}" draggable="true" data-id="{{.ID}}">
+<div class="card liftable app-card mb-3 {{if eq .Status "Applied"}}s-applied{{else if eq .Status "Rejected"}}s-rejected{{else}}s-accepted{{end}}" draggable="true" data-id="{{.ID}}">
   <div class="card-body">
-    <div class="d-flex justify-content-between align-items-start gap-2">
-      <div>
-        <div class="card-title mb-0">{{.Company}}</div>
-        {{if .Role}}<div class="meta">{{.Role}}</div>{{end}}
-      </div>
-      <span class="chip {{if eq .Status "Applied"}}t-sky{{else if eq .Status "Rejected"}}t-rose{{else}}t-mint chip-solid{{end}}"><span class="glyph">{{if eq .Status "Applied"}}&#9633;{{else if eq .Status "Rejected"}}&#10005;{{else}}&#9632;{{end}}</span> {{.Status}}</span>
-    </div>
+    <div class="card-title mb-0">{{.Company}}</div>
+    {{if .Role}}<div class="meta">{{.Role}}</div>{{end}}
     {{if .URL}}<div class="mt-2"><a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{.URL}}</a></div>{{end}}
     {{if .Notes}}<p class="notes-text mt-2 mb-0">{{.Notes}}</p>{{end}}
     <form method="post" action="/applications/status" class="d-md-none mt-3">
@@ -33,9 +28,8 @@
 {{end}}
 
 {{define "content"}}
-<div class="page-head d-flex justify-content-between align-items-end flex-wrap gap-3">
+<div class="page-head">
   <div>
-    <div class="page-no">Section 01</div>
     <h1 class="page-title">Applications</h1>
     <p class="page-sub">Track every application from sent to settled.</p>
   </div>
@@ -79,20 +73,20 @@
 
 <div class="row g-4 g-lg-5">
   <div class="col-md-4">
-    <div class="kanban-head t-sky"><span class="glyph">&#9633;</span> I. Applied <span class="kanban-count">{{len .Applied}}</span></div>
-    <div class="kanban-col t-sky" data-status="Applied">
+    <div class="col-head s-applied"><span class="col-head__label">Applied</span><span class="col-head__count">{{len .Applied}}</span></div>
+    <div class="kanban-col s-applied" data-status="Applied">
       {{range .Applied}}{{template "appcard" .}}{{else}}<div class="empty-note">Nothing here yet.</div>{{end}}
     </div>
   </div>
   <div class="col-md-4">
-    <div class="kanban-head t-rose"><span class="glyph">&#10005;</span> II. Rejected <span class="kanban-count">{{len .Rejected}}</span></div>
-    <div class="kanban-col t-rose" data-status="Rejected">
+    <div class="col-head s-rejected"><span class="col-head__label">Rejected</span><span class="col-head__count">{{len .Rejected}}</span></div>
+    <div class="kanban-col s-rejected" data-status="Rejected">
       {{range .Rejected}}{{template "appcard" .}}{{else}}<div class="empty-note">Nothing here yet.</div>{{end}}
     </div>
   </div>
   <div class="col-md-4">
-    <div class="kanban-head t-mint"><span class="glyph">&#9632;</span> III. Accepted <span class="kanban-count">{{len .Accepted}}</span></div>
-    <div class="kanban-col t-mint" data-status="Accepted">
+    <div class="col-head s-accepted"><span class="col-head__label">Accepted</span><span class="col-head__count">{{len .Accepted}}</span></div>
+    <div class="kanban-col s-accepted" data-status="Accepted">
       {{range .Accepted}}{{template "appcard" .}}{{else}}<div class="empty-note">Nothing here yet.</div>{{end}}
     </div>
   </div>

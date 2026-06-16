@@ -1,8 +1,7 @@
 {{define "title"}}Algorithms · LeeCode{{end}}
 {{define "content"}}
-<div class="page-head d-flex justify-content-between align-items-end flex-wrap gap-3">
+<div class="page-head">
   <div>
-    <div class="page-no">Section 03</div>
     <h1 class="page-title">Algorithms</h1>
     <p class="page-sub">Problems worth a second pass before interviews.</p>
   </div>
@@ -81,8 +80,8 @@
       <div class="flex-grow-1 min-w-0">
         <div class="d-flex flex-wrap align-items-center gap-2">
           <span class="card-title mb-0">{{.Title}}</span>
-          <span class="chip {{if eq .Difficulty "Easy"}}t-mint{{else if eq .Difficulty "Medium"}}t-butter{{else}}t-rose chip-solid{{end}}"><span class="glyph">{{if eq .Difficulty "Easy"}}&#9675;{{else if eq .Difficulty "Medium"}}&#9680;{{else}}&#9679;{{end}}</span> {{.Difficulty}}</span>
-          {{if .Pattern}}<span class="chip t-peach">{{.Pattern}}</span>{{end}}
+          <span class="chip {{if eq .Difficulty "Easy"}}chip--easy{{else if eq .Difficulty "Medium"}}chip--medium{{else}}chip--hard{{end}}">{{.Difficulty}}</span>
+          {{if .Pattern}}<span class="chip">{{.Pattern}}</span>{{end}}
           <span class="meta">{{.CreatedAt}}</span>
         </div>
         {{if .URL}}<a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{.URL}}</a>{{end}}

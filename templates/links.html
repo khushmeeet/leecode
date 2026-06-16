@@ -1,8 +1,7 @@
 {{define "title"}}Links · LeeCode{{end}}
 {{define "content"}}
-<div class="page-head d-flex justify-content-between align-items-end flex-wrap gap-3">
+<div class="page-head">
   <div>
-    <div class="page-no">Section 02</div>
     <h1 class="page-title">Links</h1>
     <p class="page-sub">A reading list you can reach from anywhere.</p>
   </div>
@@ -54,12 +53,12 @@
   <div class="card-body py-3">
     <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2 gap-sm-3">
       <div class="d-flex align-items-center gap-3 flex-grow-1 min-w-0">
-      {{if not .Read}}<span class="unread-mark" title="Unread">&#9632;</span>{{end}}
+      <span class="dot {{if .Read}}dot--read{{else}}dot--unread{{end}}" title="{{if .Read}}Read{{else}}Unread{{end}}"></span>
       <div class="flex-grow-1 min-w-0">
         <div class="d-flex flex-wrap align-items-center gap-2">
           <a class="card-title mb-0 text-reset text-decoration-none" href="{{.URL}}" target="_blank" rel="noopener">{{.Title}}</a>
           <a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{if .Host}}{{.Host}}{{else}}{{.URL}}{{end}}</a>
-          {{if .Tag}}<span class="chip t-butter">{{.Tag}}</span>{{end}}
+          {{if .Tag}}<span class="chip">{{.Tag}}</span>{{end}}
           <span class="meta">{{.CreatedAt}}</span>
         </div>
         {{if .Description}}<p class="notes-text desc-clamp mt-1 mb-0">{{.Description}}</p>{{end}}

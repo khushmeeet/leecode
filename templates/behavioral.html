@@ -1,8 +1,7 @@
 {{define "title"}}Behavioral · LeeCode{{end}}
 {{define "content"}}
-<div class="page-head d-flex justify-content-between align-items-end flex-wrap gap-3">
+<div class="page-head">
   <div>
-    <div class="page-no">Section 04</div>
     <h1 class="page-title">Behavioral</h1>
     <p class="page-sub">STAR stories and answers, ready to retell.</p>
   </div>
@@ -60,7 +59,7 @@
     <div class="d-flex justify-content-between align-items-start gap-3">
       <div class="d-flex flex-wrap align-items-center gap-2">
         <span class="card-title mb-0">{{.Question}}</span>
-        {{if .Category}}<span class="chip t-lilac">{{.Category}}</span>{{end}}
+        {{if .Category}}<span class="chip">{{.Category}}</span>{{end}}
         <span class="meta">{{.CreatedAt}}</span>
       </div>
       <form method="post" action="/behavioral/delete" class="flex-shrink-0" onsubmit="return confirm('Delete this answer?')">

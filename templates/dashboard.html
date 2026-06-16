@@ -1,56 +1,43 @@
 {{define "title"}}Dashboard · LeeCode{{end}}
 {{define "content"}}
-<div class="page-head d-flex justify-content-between align-items-end flex-wrap gap-3">
+<div class="page-head">
   <div>
-    <div class="page-no">Contents</div>
     <h1 class="page-title">Dashboard</h1>
     <p class="page-sub">Where the job hunt stands today.</p>
   </div>
   <a href="/export" class="btn btn-ghost">Download backup</a>
 </div>
 
-<div class="toc">
-  <a href="/applications">
-    <div class="toc-cell t-sky">
-      <div class="toc-fig">Fig. 01 — Applied</div>
-      <div class="toc-num">{{.Counts.Applied}}</div>
-      <div class="toc-label">applications in flight</div>
-    </div>
+<div class="stat-grid">
+  <a class="stat s-applied" href="/applications">
+    <div class="stat__label">Applied</div>
+    <div class="stat__num">{{.Counts.Applied}}</div>
+    <div class="stat__hint">in progress</div>
   </a>
-  <a href="/applications">
-    <div class="toc-cell t-rose">
-      <div class="toc-fig">Fig. 02 — Rejected</div>
-      <div class="toc-num">{{.Counts.Rejected}}</div>
-      <div class="toc-label">doors closed, noted</div>
-    </div>
+  <a class="stat s-rejected" href="/applications">
+    <div class="stat__label">Rejected</div>
+    <div class="stat__num">{{.Counts.Rejected}}</div>
+    <div class="stat__hint">not advancing</div>
   </a>
-  <a href="/applications">
-    <div class="toc-cell t-mint">
-      <div class="toc-fig">Fig. 03 — Accepted</div>
-      <div class="toc-num">{{.Counts.Accepted}}</div>
-      <div class="toc-label">offers on the table</div>
-    </div>
+  <a class="stat s-accepted" href="/applications">
+    <div class="stat__label">Accepted</div>
+    <div class="stat__num">{{.Counts.Accepted}}</div>
+    <div class="stat__hint">offers</div>
   </a>
-  <a href="/links">
-    <div class="toc-cell t-butter">
-      <div class="toc-fig">Fig. 04 — Reading</div>
-      <div class="toc-num">{{.Counts.UnreadLinks}}<span class="denom"> / {{.Counts.TotalLinks}}</span></div>
-      <div class="toc-label">links still unread</div>
-    </div>
+  <a class="stat" href="/links">
+    <div class="stat__label">Links</div>
+    <div class="stat__num">{{.Counts.UnreadLinks}}<span class="denom"> / {{.Counts.TotalLinks}}</span></div>
+    <div class="stat__hint">unread</div>
   </a>
-  <a href="/algorithms">
-    <div class="toc-cell t-peach">
-      <div class="toc-fig">Fig. 05 — Revision</div>
-      <div class="toc-num">{{.Counts.Problems}}</div>
-      <div class="toc-label">problems to revise</div>
-    </div>
+  <a class="stat" href="/algorithms">
+    <div class="stat__label">Algorithms</div>
+    <div class="stat__num">{{.Counts.Problems}}</div>
+    <div class="stat__hint">to revisit</div>
   </a>
-  <a href="/behavioral">
-    <div class="toc-cell t-lilac">
-      <div class="toc-fig">Fig. 06 — Stories</div>
-      <div class="toc-num">{{.Counts.Stories}}</div>
-      <div class="toc-label">behavioral answers</div>
-    </div>
+  <a class="stat" href="/behavioral">
+    <div class="stat__label">Behavioral</div>
+    <div class="stat__num">{{.Counts.Stories}}</div>
+    <div class="stat__hint">answers saved</div>
   </a>
 </div>
 {{end}}
