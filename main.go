@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"database/sql"
 	"embed"
 	"fmt"
@@ -13,6 +14,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
 	"golang.org/x/net/html"
 )
 
@@ -23,7 +26,22 @@ var (
 	db        *sql.DB
 	dbPath    string
 	templates = map[string]*template.Template{}
+
+	// markdown renders user notes. Raw HTML is left escaped (no WithUnsafe),
+	// so untrusted-looking input can't inject markup.
+	markdown = goldmark.New(goldmark.WithExtensions(extension.GFM))
 )
+
+var tmplFuncs = template.FuncMap{
+	// md turns a markdown note into safe HTML for inline rendering.
+	"md": func(s string) template.HTML {
+		var buf bytes.Buffer
+		if err := markdown.Convert([]byte(s), &buf); err != nil {
+			return template.HTML(template.HTMLEscapeString(s))
+		}
+		return template.HTML(buf.String())
+	},
+}
 
 func main() {
 	dbPath = os.Getenv("DB_PATH")
@@ -37,7 +55,7 @@ func main() {
 	}
 
 	for _, page := range []string{"dashboard", "applications", "links", "algorithms", "behavioral"} {
-		templates[page] = template.Must(template.ParseFS(templateFS, "templates/layout.html", "templates/"+page+".html"))
+		templates[page] = template.Must(template.New(page).Funcs(tmplFuncs).ParseFS(templateFS, "templates/layout.html", "templates/"+page+".html"))
 	}
 
 	mux := http.NewServeMux()

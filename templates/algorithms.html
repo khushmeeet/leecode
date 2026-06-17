@@ -1,8 +1,8 @@
-{{define "title"}}Algorithms · LeeCode{{end}}
+{{define "title"}}Notes · LeeCode{{end}}
 {{define "content"}}
 <div class="page-head">
   <div>
-    <h1 class="page-title">Algorithms</h1>
+    <h1 class="page-title">Notes</h1>
     <p class="page-sub">Problems worth a second pass before interviews.</p>
   </div>
   <button class="btn btn-ink" data-bs-toggle="modal" data-bs-target="#addProblem">Add problem</button>
@@ -84,8 +84,8 @@
           {{if .Pattern}}<span class="chip">{{.Pattern}}</span>{{end}}
           <span class="meta">{{.CreatedAt}}</span>
         </div>
-        {{if .URL}}<a class="mono-link" href="{{.URL}}" target="_blank" rel="noopener">{{.URL}}</a>{{end}}
-        {{if .Notes}}<p class="notes-text mt-1 mb-0">{{.Notes}}</p>{{end}}
+        {{if .URL}}<a class="mono-link d-inline-block mt-1" href="{{.URL}}" target="_blank" rel="noopener">{{.URL}}</a>{{end}}
+        {{if .Notes}}<div class="md mt-3">{{md .Notes}}</div>{{end}}
       </div>
       <form method="post" action="/algorithms/delete" class="flex-shrink-0" onsubmit="return confirm('Delete this problem?')">
         <input type="hidden" name="id" value="{{.ID}}">

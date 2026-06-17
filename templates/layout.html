@@ -201,6 +201,55 @@
     .card.liftable:hover { border-color: var(--border-strong); background: var(--surface-2); }
     .card-title { font-size: 15px; font-weight: 600; line-height: 1.35; color: var(--text); }
     .notes-text { font-size: 13.5px; line-height: 1.6; color: var(--muted); white-space: pre-line; }
+
+    /* ---- Rendered markdown (notes) ---- */
+    .md { font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+    .md > :first-child { margin-top: 0; }
+    .md > :last-child { margin-bottom: 0; }
+    .md h1, .md h2, .md h3, .md h4 {
+      color: var(--text);
+      font-weight: 600;
+      line-height: 1.3;
+      margin: 1.1em 0 .4em;
+    }
+    .md h1 { font-size: 17px; }
+    .md h2 { font-size: 15px; }
+    .md h3 { font-size: 14px; }
+    .md h4 { font-size: 13.5px; }
+    .md p { margin: 0 0 .7em; }
+    .md ul, .md ol { margin: 0 0 .7em; padding-left: 1.4em; }
+    .md li { margin: .15em 0; }
+    .md li > ul, .md li > ol { margin: .15em 0; }
+    .md a { color: var(--green-ink); text-decoration: underline; }
+    .md a:hover { color: var(--green-ink-h); }
+    .md code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .9em;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .05em .35em;
+    }
+    .md pre {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      overflow-x: auto;
+      margin: 0 0 .7em;
+    }
+    .md pre code { background: none; border: 0; padding: 0; font-size: 12.5px; }
+    .md blockquote {
+      margin: 0 0 .7em;
+      padding: .1em 0 .1em .9em;
+      border-left: 3px solid var(--border-strong);
+      color: var(--subtle);
+    }
+    .md hr { border: 0; border-top: 1px solid var(--border); margin: 1em 0; }
+    .md table { border-collapse: collapse; margin: 0 0 .7em; font-size: 13px; }
+    .md th, .md td { border: 1px solid var(--border); padding: 4px 9px; text-align: left; }
+    .md th { background: var(--surface-2); font-weight: 600; color: var(--text); }
+    .md img { max-width: 100%; height: auto; }
     .desc-clamp {
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -267,6 +316,11 @@
     .form-control::placeholder { color: var(--subtle); }
     .form-text { font-family: var(--font); font-style: normal; font-size: 12px; color: var(--subtle); }
     .form-select-sm, .form-control-sm { font-size: 13px; padding: 5px 9px; }
+    /* the padding shorthand above wipes Bootstrap's reserved space for the
+       caret; selects need explicit room on the right so the arrow never
+       overlaps the text (most visible on a narrow, single-option select). */
+    .form-select { padding-right: 34px; }
+    .form-select-sm { padding-right: 30px; }
 
     /* ---- Kanban ---- */
     .col-head {
@@ -354,7 +408,7 @@
       <ul class="site-nav">
         <li><a class="{{if eq .Active "applications"}}active{{end}}" href="/applications">Applications</a></li>
         <li><a class="{{if eq .Active "links"}}active{{end}}" href="/links">Links</a></li>
-        <li><a class="{{if eq .Active "algorithms"}}active{{end}}" href="/algorithms">Algorithms</a></li>
+        <li><a class="{{if eq .Active "algorithms"}}active{{end}}" href="/algorithms">Notes</a></li>
         <li><a class="{{if eq .Active "behavioral"}}active{{end}}" href="/behavioral">Behavioral</a></li>
       </ul>
     </div>
