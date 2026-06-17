@@ -1,0 +1,17 @@
+# Litestream continuously streams the SQLite database to an S3-compatible
+# bucket (Cloudflare R2 or AWS S3). Everything sensitive is injected from the
+# environment via ${VAR} expansion, so nothing secret lives in this file or git.
+#
+# Set these as Fly secrets (see README/deploy notes):
+#   REPLICA_BUCKET, REPLICA_ENDPOINT, REPLICA_REGION,
+#   LITESTREAM_ACCESS_KEY_ID, LITESTREAM_SECRET_ACCESS_KEY
+dbs:
+  - path: ${DB_PATH}
+    replica:
+      type: s3
+      bucket: ${REPLICA_BUCKET}
+      path: interview.db
+      endpoint: ${REPLICA_ENDPOINT}
+      region: ${REPLICA_REGION}
+      access-key-id: ${LITESTREAM_ACCESS_KEY_ID}
+      secret-access-key: ${LITESTREAM_SECRET_ACCESS_KEY}
